@@ -224,6 +224,80 @@ function renderServiceCards(containerId, limit){
   document.querySelectorAll(`#${containerId} .reveal`).forEach(c => c.classList.add("in"));
 }
 
+/* ---------- Home services slider (arrow controlled) ---------- */
+function initServicesSlider(){
+  const track = document.getElementById("home-services-grid");
+  const prevBtn = document.getElementById("services-prev");
+  const nextBtn = document.getElementById("services-next");
+  const dotsWrap = document.getElementById("services-dots");
+  if (!track || !prevBtn || !nextBtn) return;
+
+  const cards = () => Array.from(track.children);
+  const step = () => {
+    const c = track.querySelector(".card");
+    if (!c) return 300;
+    const gap = parseFloat(getComputedStyle(track).gap) || 28;
+    return c.getBoundingClientRect().width + gap;
+  };
+
+  // build dots
+  function buildDots(){
+    if (!dotsWrap) return;
+    dotsWrap.innerHTML = cards().map((_, i) => `<button class="dot${i === 0 ? " active" : ""}" data-idx="${i}" aria-label="Go to slide ${i + 1}"></button>`).join("");
+  }
+  buildDots();
+
+  function activeIndex(){
+    return Math.round(track.scrollLeft / step());
+  }
+
+  function updateDots(){
+    if (!dotsWrap) return;
+    const idx = activeIndex();
+    dotsWrap.querySelectorAll(".dot").forEach((d, i) => d.classList.toggle("active", i === idx));
+  }
+
+  function goTo(idx){
+    const max = cards().length - 1;
+    const clamped = Math.max(0, Math.min(idx, max));
+    track.scrollTo({ left: clamped * step(), behavior: "smooth" });
+  }
+
+  nextBtn.addEventListener("click", () => {
+    const max = track.scrollWidth - track.clientWidth - 4;
+    if (track.scrollLeft >= max){
+      track.scrollTo({ left: 0, behavior: "smooth" }); // loop back to start
+    } else {
+      track.scrollBy({ left: step(), behavior: "smooth" });
+    }
+  });
+
+  prevBtn.addEventListener("click", () => {
+    if (track.scrollLeft <= 4){
+      track.scrollTo({ left: track.scrollWidth, behavior: "smooth" }); // loop to end
+    } else {
+      track.scrollBy({ left: -step(), behavior: "smooth" });
+    }
+  });
+
+  if (dotsWrap){
+    dotsWrap.addEventListener("click", (e) => {
+      const dot = e.target.closest(".dot");
+      if (!dot) return;
+      goTo(+dot.dataset.idx);
+    });
+  }
+
+  let scrollTimer;
+  track.addEventListener("scroll", () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(updateDots, 80);
+  });
+
+  // rebuild dots if card count changes after data render
+  buildDots();
+}
+
 /* ---------- Render service detail page ---------- */
 function renderServiceDetail(){
   const mount = document.getElementById("service-detail-mount");
@@ -416,6 +490,7 @@ function initYear(){
 document.addEventListener("DOMContentLoaded", () => {
   initNav();
   renderServiceCards("home-services-grid", 5);
+  initServicesSlider();
   renderServiceCards("all-services-grid");
   renderServiceDetail();
   initAppointmentForm();

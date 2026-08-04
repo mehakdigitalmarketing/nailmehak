@@ -342,6 +342,61 @@ section{ padding:96px 0; }
 .ph-party{ background:linear-gradient(135deg,#241018,#7a2440); }
 .ph-luxury{ background:linear-gradient(135deg,#0e0c0a,#c8a45c); }
 
+/* ---------- Services slider ---------- */
+.slider-wrap{ position:relative; display:flex; align-items:flex-start; gap:14px; }
+.slider-track{
+  display:flex;
+  flex-wrap:nowrap;
+  gap:28px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  padding:6px 2px 26px;
+  -ms-overflow-style:none;
+  scrollbar-width:none;
+}
+.slider-track::-webkit-scrollbar{ display:none; }
+.slider-track .card{
+  flex:0 0 auto;
+  width:280px;
+  scroll-snap-align:start;
+}
+
+.slider-arrow{
+  flex:0 0 auto;
+  width:48px; height:48px; border-radius:50%;
+  border:1px solid var(--gold);
+  background:var(--white);
+  color:var(--gold-deep);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:var(--shadow-card);
+  transition:transform .3s ease, background .3s ease, color .3s ease, opacity .3s ease;
+  z-index:2;
+  margin-top:80px; /* visually centers on the card image, not the whole card */
+}
+.slider-arrow svg{ width:20px; height:20px; }
+.slider-arrow:hover{ background:var(--gold); color:var(--ink); transform:scale(1.08); }
+.slider-arrow:active{ transform:scale(.95); }
+.slider-arrow[disabled]{ opacity:.35; pointer-events:none; }
+
+@media (max-width:560px){
+  .slider-wrap{ gap:8px; }
+  .slider-track{ gap:16px; padding:4px 2px 22px; }
+  .slider-track .card{ width:208px; }
+  .slider-track .card-body{ padding:16px 14px 18px; gap:6px; }
+  .slider-track .card-body h3{ font-size:18px; }
+  .slider-track .card-body p{ font-size:12.5px; }
+  .slider-arrow{ width:34px; height:34px; margin-top:60px; }
+  .slider-arrow svg{ width:14px; height:14px; }
+}
+
+.slider-dots{ display:flex; justify-content:center; gap:8px; margin:-8px 0 8px; }
+.slider-dots .dot{
+  width:7px; height:7px; border-radius:50%; background:#ddd0ac;
+  border:none; padding:0; cursor:pointer; transition:.3s ease;
+}
+.slider-dots .dot.active{ background:var(--gold-deep); width:22px; border-radius:5px; }
+
 /* ---------- Why choose us ---------- */
 .grid-why{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:26px; }
 .why-item{

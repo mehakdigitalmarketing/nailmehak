@@ -95,7 +95,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="eyebrow">What We Offer</span>
       <h2 class="section-title">Our Signature Services</h2>
       <p class="section-sub">From everyday shellac to bridal-ready extensions — every service is finished with premium products and an eye for detail.</p>
-      <div class="grid-services" id="home-services-grid"></div>
+
+      <div class="slider-wrap">
+        <button class="slider-arrow prev" id="services-prev" aria-label="Previous services">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="grid-services slider-track" id="home-services-grid"></div>
+        <button class="slider-arrow next" id="services-next" aria-label="Next services">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+      <div class="slider-dots" id="services-dots"></div>
+
       <div class="text-center mt-40">
         <a href="services.html" class="btn btn-dark">View All Services</a>
       </div>
