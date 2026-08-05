@@ -142,13 +142,13 @@ const ICONS = {
   cert: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="32" cy="24" r="14"/><path d="M24 36l-4 20 12-6 12 6-4-20"/></svg>`,
   ring: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="32" cy="32" r="18"/><circle cx="32" cy="32" r="10"/></svg>`,
 };
-function iconMarkup(name){ return ICONS[name] || ICONS.spark; }
+function iconMarkup(name) { return ICONS[name] || ICONS.spark; }
 
 /* ---------- Header / Footer active link + mobile nav ---------- */
-function initNav(){
+function initNav() {
   const toggle = document.querySelector(".nav-toggle");
   const links = document.querySelector(".nav-links");
-  if (toggle && links){
+  if (toggle && links) {
     toggle.addEventListener("click", () => {
       links.classList.toggle("open");
       toggle.classList.toggle("open");
@@ -161,7 +161,7 @@ function initNav(){
   });
 
   const header = document.querySelector(".site-header");
-  if (header){
+  if (header) {
     window.addEventListener("scroll", () => {
       header.style.boxShadow = window.scrollY > 20 ? "0 10px 30px rgba(0,0,0,.35)" : "none";
     });
@@ -169,12 +169,12 @@ function initNav(){
 }
 
 /* ---------- Scroll reveal ---------- */
-function initReveal(){
+function initReveal() {
   const els = document.querySelectorAll(".reveal, .reveal-stagger");
-  if (!("IntersectionObserver" in window)){ els.forEach(el => el.classList.add("in")); return; }
+  if (!("IntersectionObserver" in window)) { els.forEach(el => el.classList.add("in")); return; }
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting){
+      if (entry.isIntersecting) {
         entry.target.classList.add("in");
         obs.unobserve(entry.target);
       }
@@ -184,15 +184,15 @@ function initReveal(){
 }
 
 /* ---------- Button ripple ---------- */
-function initRipple(){
+function initRipple() {
   document.querySelectorAll(".btn").forEach(btn => {
-    btn.addEventListener("click", function(e){
+    btn.addEventListener("click", function (e) {
       const circle = document.createElement("span");
       const d = Math.max(this.clientWidth, this.clientHeight);
       circle.style.width = circle.style.height = d + "px";
       const rect = this.getBoundingClientRect();
-      circle.style.left = (e.clientX - rect.left - d/2) + "px";
-      circle.style.top = (e.clientY - rect.top - d/2) + "px";
+      circle.style.left = (e.clientX - rect.left - d / 2) + "px";
+      circle.style.top = (e.clientY - rect.top - d / 2) + "px";
       circle.classList.add("ripple");
       this.appendChild(circle);
       setTimeout(() => circle.remove(), 650);
@@ -201,7 +201,7 @@ function initRipple(){
 }
 
 /* ---------- Render service cards (Home + Services pages) ---------- */
-function renderServiceCards(containerId, limit){
+function renderServiceCards(containerId, limit) {
   const el = document.getElementById(containerId);
   if (!el) return;
   const list = limit ? SERVICES.slice(0, limit) : SERVICES;
@@ -225,7 +225,7 @@ function renderServiceCards(containerId, limit){
 }
 
 /* ---------- Home services slider (arrow controlled) ---------- */
-function initServicesSlider(){
+function initServicesSlider() {
   const track = document.getElementById("home-services-grid");
   const prevBtn = document.getElementById("services-prev");
   const nextBtn = document.getElementById("services-next");
@@ -241,23 +241,23 @@ function initServicesSlider(){
   };
 
   // build dots
-  function buildDots(){
+  function buildDots() {
     if (!dotsWrap) return;
     dotsWrap.innerHTML = cards().map((_, i) => `<button class="dot${i === 0 ? " active" : ""}" data-idx="${i}" aria-label="Go to slide ${i + 1}"></button>`).join("");
   }
   buildDots();
 
-  function activeIndex(){
+  function activeIndex() {
     return Math.round(track.scrollLeft / step());
   }
 
-  function updateDots(){
+  function updateDots() {
     if (!dotsWrap) return;
     const idx = activeIndex();
     dotsWrap.querySelectorAll(".dot").forEach((d, i) => d.classList.toggle("active", i === idx));
   }
 
-  function goTo(idx){
+  function goTo(idx) {
     const max = cards().length - 1;
     const clamped = Math.max(0, Math.min(idx, max));
     track.scrollTo({ left: clamped * step(), behavior: "smooth" });
@@ -265,7 +265,7 @@ function initServicesSlider(){
 
   nextBtn.addEventListener("click", () => {
     const max = track.scrollWidth - track.clientWidth - 4;
-    if (track.scrollLeft >= max){
+    if (track.scrollLeft >= max) {
       track.scrollTo({ left: 0, behavior: "smooth" }); // loop back to start
     } else {
       track.scrollBy({ left: step(), behavior: "smooth" });
@@ -273,14 +273,14 @@ function initServicesSlider(){
   });
 
   prevBtn.addEventListener("click", () => {
-    if (track.scrollLeft <= 4){
+    if (track.scrollLeft <= 4) {
       track.scrollTo({ left: track.scrollWidth, behavior: "smooth" }); // loop to end
     } else {
       track.scrollBy({ left: -step(), behavior: "smooth" });
     }
   });
 
-  if (dotsWrap){
+  if (dotsWrap) {
     dotsWrap.addEventListener("click", (e) => {
       const dot = e.target.closest(".dot");
       if (!dot) return;
@@ -299,7 +299,7 @@ function initServicesSlider(){
 }
 
 /* ---------- Render service detail page ---------- */
-function renderServiceDetail(){
+function renderServiceDetail() {
   const mount = document.getElementById("service-detail-mount");
   if (!mount) return;
   const params = new URLSearchParams(location.search);
@@ -340,7 +340,7 @@ function renderServiceDetail(){
 
   // populate "other services" strip if present
   const otherMount = document.getElementById("other-services");
-  if (otherMount){
+  if (otherMount) {
     otherMount.innerHTML = SERVICES.filter(x => x.id !== s.id).map(o => `
       <a class="card reveal" href="service-details.html?service=${o.id}" style="text-decoration:none">
         <div class="card-media"><div class="ph ${o.ph}">${iconMarkup(o.icon)}</div>
@@ -354,13 +354,13 @@ function renderServiceDetail(){
 }
 
 /* ---------- Appointment form -> WhatsApp + redirect ---------- */
-function initAppointmentForm(){
+function initAppointmentForm() {
   const form = document.getElementById("appointment-form");
   if (!form) return;
 
   // populate service select from data
   const select = form.querySelector("#service-select");
-  if (select){
+  if (select) {
     SERVICES.forEach(s => {
       const opt = document.createElement("option");
       opt.value = s.name;
@@ -371,12 +371,12 @@ function initAppointmentForm(){
   // pre-select via ?service= if present
   const params = new URLSearchParams(location.search);
   const pre = params.get("service");
-  if (pre && select){
+  if (pre && select) {
     const match = SERVICES.find(s => s.id === pre);
     if (match) select.value = match.name;
   }
 
-  form.addEventListener("submit", function(e){
+  form.addEventListener("submit", function (e) {
     e.preventDefault();
     const name = form.fullname.value.trim();
     const mobile = form.mobile.value.trim();
@@ -386,7 +386,7 @@ function initAppointmentForm(){
     const message = form.message.value.trim() || "—";
 
     const text =
-`Hello Mehak,
+      `Hello Mehak,
 New Appointment Request
 
 Name: ${name}
@@ -399,23 +399,67 @@ Message: ${message}
 Please contact the customer.`;
 
     const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
-    window.open(waUrl, "_blank", "noopener");
-    window.location.href = "thankyou.html";
+
+    emailjs.send(
+      "service_kqan8pj",
+      "template_g28jr9m",
+      {
+        name: name,
+        fullname: name,
+        mobile: mobile,
+        service: service,
+        date: date,
+        time: time,
+        message: message
+      }
+    ).then(function () {
+
+      window.open(waUrl, "_blank", "noopener");
+      window.location.href = "thankyou.html";
+
+    }).catch(function (error) {
+      console.error(error);
+      alert("Failed to send enquiry.");
+    });
   });
 }
 
 /* ---------- Contact form (general enquiry) -> WhatsApp ---------- */
-function initContactForm(){
+function initContactForm() {
   const form = document.getElementById("contact-form");
   if (!form) return;
-  form.addEventListener("submit", function(e){
+  form.addEventListener("submit", function (e) {
     e.preventDefault();
     const name = form.cname.value.trim();
     const mobile = form.cmobile.value.trim();
     const message = form.cmessage.value.trim() || "—";
     const text = `Hello Mehak,\nEnquiry from website\n\nName: ${name}\nMobile: ${mobile}\nMessage: ${message}`;
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+    emailjs.send(
+    "service_kqan8pj",
+    "template_g28jr9m",
+    {
+        name: name,
+        fullname: name,
+        mobile: mobile,
+        service: "General Enquiry",
+        date: "-",
+        time: "-",
+        message: message
+    }
+).then(function () {
+
+    window.open(
+        `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`,
+        "_blank",
+        "noopener"
+    );
+
     window.location.href = "thankyou.html";
+
+}).catch(function (error) {
+    console.error(error);
+    alert("Failed to send enquiry.");
+});
   });
 }
 
@@ -435,14 +479,14 @@ const GALLERY = [
   { cat: "Press On", ph: "ph-gel", icon: "press", title: "Floral Press-On" }
 ];
 
-function initGallery(){
+function initGallery() {
   const grid = document.getElementById("gallery-grid");
   if (!grid) return;
   const filterBar = document.getElementById("filter-bar");
   const lightbox = document.getElementById("lightbox");
   const lightboxInner = lightbox ? lightbox.querySelector(".lightbox-inner") : null;
 
-  function draw(items){
+  function draw(items) {
     grid.innerHTML = items.map((g, i) => `
       <div class="gallery-tile reveal ${i % 5 === 0 ? "tall" : ""}" data-idx="${i}">
         <div class="ph ${g.ph}">${iconMarkup(g.icon)}</div>
@@ -453,7 +497,7 @@ function initGallery(){
     grid.querySelectorAll(".gallery-tile").forEach(tile => {
       tile.addEventListener("click", () => {
         const g = items[+tile.dataset.idx];
-        if (lightboxInner){
+        if (lightboxInner) {
           lightboxInner.querySelector(".ph").outerHTML = `<div class="ph ${g.ph}">${iconMarkup(g.icon)}</div>`;
           lightbox.classList.add("open");
         }
@@ -463,7 +507,7 @@ function initGallery(){
 
   draw(GALLERY);
 
-  if (filterBar){
+  if (filterBar) {
     filterBar.addEventListener("click", (e) => {
       const btn = e.target.closest(".filter-btn");
       if (!btn) return;
@@ -474,7 +518,7 @@ function initGallery(){
     });
   }
 
-  if (lightbox){
+  if (lightbox) {
     lightbox.addEventListener("click", (e) => {
       if (e.target === lightbox || e.target.closest(".lightbox-close")) lightbox.classList.remove("open");
     });
@@ -482,7 +526,7 @@ function initGallery(){
 }
 
 /* ---------- Footer year ---------- */
-function initYear(){
+function initYear() {
   document.querySelectorAll(".footer-year").forEach(el => el.textContent = new Date().getFullYear());
 }
 
