@@ -219,6 +219,11 @@ section{ padding:96px 0; }
   .nav-links a{ font-size:16px; }
   .nav-cta{ display:none; }
   .nav-toggle{ display:flex; }
+      .site-header{
+       -webkit-backdrop-filter:none;
+       backdrop-filter:none;
+       background:rgba(14,12,10,.97);
+     } 
 }
 
 /* ---------- Hero ---------- */
