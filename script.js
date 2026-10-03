@@ -463,68 +463,6 @@ function initContactForm() {
   });
 }
 
-/* ---------- Gallery filter + lightbox ---------- */
-const GALLERY = [
-  { cat: "Shellac", ph: "ph-shellac", icon: "polish", title: "Soft Nude Shellac" },
-  { cat: "Extensions", ph: "ph-acrylic", icon: "extension", title: "Ruby Red Acrylic" },
-  { cat: "Press On", ph: "ph-pressOn", icon: "press", title: "Cherry Press-On Set" },
-  { cat: "Bridal Nails", ph: "ph-bridal", icon: "ring", title: "Ivory Bridal Set" },
-  { cat: "Party Nails", ph: "ph-party", icon: "spark", title: "Wine Party Glam" },
-  { cat: "Luxury Nails", ph: "ph-luxury", icon: "heart", title: "Gold Chrome Luxe" },
-  { cat: "Extensions", ph: "ph-gel", icon: "extension", title: "Glossy Gel Almond" },
-  { cat: "Shellac", ph: "ph-temp", icon: "polish", title: "Blush Shellac Swirl" },
-  { cat: "Bridal Nails", ph: "ph-luxury", icon: "ring", title: "Gold Foil Bridal" },
-  { cat: "Party Nails", ph: "ph-pressOn", icon: "spark", title: "Black & Gold Glam" },
-  { cat: "Luxury Nails", ph: "ph-acrylic", icon: "heart", title: "Marble Chrome Set" },
-  { cat: "Press On", ph: "ph-gel", icon: "press", title: "Floral Press-On" }
-];
-
-function initGallery() {
-  const grid = document.getElementById("gallery-grid");
-  if (!grid) return;
-  const filterBar = document.getElementById("filter-bar");
-  const lightbox = document.getElementById("lightbox");
-  const lightboxInner = lightbox ? lightbox.querySelector(".lightbox-inner") : null;
-
-  function draw(items) {
-    grid.innerHTML = items.map((g, i) => `
-      <div class="gallery-tile reveal ${i % 5 === 0 ? "tall" : ""}" data-idx="${i}">
-        <div class="ph ${g.ph}">${iconMarkup(g.icon)}</div>
-        <div class="label">${g.title}</div>
-      </div>
-    `).join("");
-    grid.querySelectorAll(".reveal").forEach(c => c.classList.add("in"));
-    grid.querySelectorAll(".gallery-tile").forEach(tile => {
-      tile.addEventListener("click", () => {
-        const g = items[+tile.dataset.idx];
-        if (lightboxInner) {
-          lightboxInner.querySelector(".ph").outerHTML = `<div class="ph ${g.ph}">${iconMarkup(g.icon)}</div>`;
-          lightbox.classList.add("open");
-        }
-      });
-    });
-  }
-
-  draw(GALLERY);
-
-  if (filterBar) {
-    filterBar.addEventListener("click", (e) => {
-      const btn = e.target.closest(".filter-btn");
-      if (!btn) return;
-      filterBar.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      const cat = btn.dataset.cat;
-      draw(cat === "All" ? GALLERY : GALLERY.filter(g => g.cat === cat));
-    });
-  }
-
-  if (lightbox) {
-    lightbox.addEventListener("click", (e) => {
-      if (e.target === lightbox || e.target.closest(".lightbox-close")) lightbox.classList.remove("open");
-    });
-  }
-}
-
 /* ---------- Footer year ---------- */
 function initYear() {
   document.querySelectorAll(".footer-year").forEach(el => el.textContent = new Date().getFullYear());
@@ -539,7 +477,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderServiceDetail();
   initAppointmentForm();
   initContactForm();
-  initGallery();
   initYear();
   initReveal();
   initRipple();
